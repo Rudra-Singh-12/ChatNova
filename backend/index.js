@@ -2,8 +2,9 @@ import express from "express"
 import 'dotenv/config'
 import path from "path"
 
-import authRoutes from '../routes/auth.route.js'
-import messageRoutes from '../routes/message.route.js'
+import authRoutes from './routes/auth.route.js'
+import messageRoutes from './routes/message.route.js'
+import { connectDB } from "./db/db.js"
 
 const app = express()
 const _dirname = path.resolve()
@@ -25,6 +26,10 @@ if (process.env.NODE_ENV == "production") {
     })
 }
 
-app.listen(PORT, (req, res) => {
-    console.log(`Server is running on the port http://localhost:${PORT}`)
-})
+connectDB()
+    .then(() => {
+        app.listen(PORT, (req, res) => {
+            console.log(`Server is running on the port http://localhost:${PORT}`)
+        })
+    })
+    .catch((err) => console.log("Error in connecting to Database"))
