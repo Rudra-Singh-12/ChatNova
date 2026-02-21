@@ -2,8 +2,8 @@ import express from "express"
 import 'dotenv/config'
 import path from "path"
 
-import authRoutes from './routes/auth.route.js'
-import messageRoutes from './routes/message.route.js'
+import authRoutes from '../routes/auth.route.js'
+import messageRoutes from '../routes/message.route.js'
 
 const app = express()
 const _dirname = path.resolve()
