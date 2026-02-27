@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import { generateToken } from "../utils/genToken.js";
 import { sendWelcomeEmail } from "../Email/emailHandler.js";
 import { ENV } from "../utils/ENV.js";
+import cloudinary from "../utils/cloudinary.js";
 
 
 export const signup = async (req, res) => {
@@ -56,7 +57,7 @@ export const signup = async (req, res) => {
         if (newUser) {
 
             const saveUser = await newUser.save()
-            const token = generateToken(res, User._id)
+            const token = generateToken(res, user._id)
 
 
             res
@@ -110,7 +111,7 @@ export const login = async (req, res) => {
                     Message: "Invalid Credentials."
                 })
         }
-        generateToken(res, User._id)
+        generateToken(res, existingUser._id)
         res.status(200).json({
             _id: existingUser._id,
             fullName: existingUser.fullName,
@@ -127,8 +128,34 @@ export const login = async (req, res) => {
 }
 
 export const logout = (_, res) => {
-    res.cookie("Token", "", { maxAge: 0 })
+    res.cookie("token", "", { maxAge: 0 })
     res.status(200).json({
         Message: "Logged out successfully."
     })
-}   
+}
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { profilePic } = req.body
+        if (!profilePic) {
+            return res.status(400)
+                .json({
+                    message: "Profile pic is required"
+                })
+        }
+
+        const userId = req.user._id
+        const uploadResponse = await cloudinary.uploader(profilePic)
+        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url }, { new: true })
+
+        return res.status(200).json({
+            message: "Profile is updated",
+            updatedUser
+        })
+    } catch (error) {
+        return res.status(500)
+            .json({
+                message: "Internal Server Error."
+            })
+    }
+}
