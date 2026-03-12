@@ -1,34 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Route, Routes } from 'react-router'
+import ChatPage from './Pages/ChatPage'
+import LoginPage from './Pages/LoginPage'
+import SignUpPage from './Pages/SignUpPage'
+
+const App = () => {
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="relative min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
+
+      {/* GRID BACKGROUND */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0f_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0f_1px,transparent_1px)] bg-[size:32px_32px]" />
+
+      {/* GRADIENT LIGHT */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-black" />
+
+      {/* PURPLE GLOW */}
+      <div className="absolute top-[-150px] left-[-150px] w-[450px] h-[450px] bg-purple-600 opacity-30 blur-[160px] rounded-full animate-pulse" />
+
+      {/* CYAN GLOW */}
+      <div className="absolute bottom-[-150px] right-[-150px] w-[450px] h-[450px] bg-cyan-500 opacity-30 blur-[160px] rounded-full animate-pulse" />
+
+      <div className="absolute w-150 h-[600px] bg-indigo-600 opacity-20 blur-[200px] rounded-full" />
+
+      <Routes>
+        <Route path='/' element={<ChatPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/signup' element={<SignUpPage />} />
+      </Routes>
+    </div>
   )
 }
 
